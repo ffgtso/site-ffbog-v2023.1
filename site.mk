@@ -11,7 +11,7 @@ ebtables-filter-multicast
 ebtables-filter-ra-dhcp
 ebtables-limit-arp
 mesh-batman-adv-15
-mesh-vpn-wireguard
+mesh-vpn-tunneldigger
 radv-filterd
 radvd
 respondd
@@ -38,7 +38,6 @@ GLUON_FEATURES_standard := $(GLUON_FEATURES_standard:\n= )
 define GLUON_SITE_PACKAGES :=
 ffac-autoupdater-wifi-fallback
 ffac-ssid-changer
-ffac-wg-registration
 iwinfo
 respondd-module-airtime
 endef
