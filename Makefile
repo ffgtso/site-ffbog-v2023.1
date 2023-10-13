@@ -28,7 +28,7 @@ GLUON_BUILD_DIR := gluon-build
 
 export GLUON_SITEDIR := ..
 PATCH_DIR := patches
-SECRET_KEY_FILE ?= $(HOME)/.gluon-secret-key
+SECRET_KEY_FILE ?= ${HOME}/build/secret-build
 OPKG_KEY_FOLDER ?= $(HOME)/.key-build
 
 
@@ -76,7 +76,7 @@ endif
 define INFO :=
 
 #########################
-# FFAC Firmware build
+# 4830 Firmware build
 # building release '$(GLUON_RELEASE)'$(TARGETS_INFO)$(DEVICE_INFO)
 #########################
 # MAKEFLAGS:
@@ -126,7 +126,7 @@ ifdef DEVICE_INFO
 	@echo "make sign hasn't been designed to work while GLUON_DEVICES is set."
 	@exit 1
 endif
-	@for branch in experimental beta stable; do \
+	@for branch in master tng rawhide experimental testing stable; do \
 		echo ''; \
 		echo ''Signing $$branch.manifest''; \
 		$(GLUON_BUILD_DIR)/contrib/sign.sh $(SECRET_KEY_FILE) output/images/sysupgrade/$$branch.manifest; \
@@ -137,7 +137,7 @@ endif
 # This allows communication of MAKEFLAGS like -j to submake.
 # https://stackoverflow.com/a/60706372/2721478
 manifest: build
-	+@for branch in experimental beta stable; do \
+	+@for branch in master tng rawhide experimental testing stable; do \
 		echo ''; \
 		echo ''Creating $$branch manifest''; \
 		$(GLUON_MAKE) manifest GLUON_AUTOUPDATER_BRANCH=$$branch; \
@@ -159,10 +159,10 @@ ifndef GLUON_DEVICES
 	rsync -a --exclude '*/base' --exclude '*/luci' --exclude '*/packages' --exclude '*/routing' --exclude '*/telephony' $(GLUON_BUILD_DIR)/openwrt/bin/packages/ output/packages/$(PACKAGES_BRANCH)/
 endif
 
-gluon-prepare: gluon-update ffac-patch | .modules
+gluon-prepare: gluon-update ffgt-patch | .modules
 
 PATCH_FILES = $(shell find $(PATCH_DIR)/ -type f -name '*.patch')
-ffac-patch: gluon-update
+ffgt-patch: gluon-update
 	@echo 'Applying patches…'
 	@if [ `$(GLUON_GIT) branch --list patched` ]; then \
 		$(GLUON_GIT) branch -D patched; \
@@ -178,10 +178,10 @@ ffac-patch: gluon-update
 	fi
 	@$(GLUON_GIT) branch -M patched
 
-.cmp-git-head: FORCE | ffac-patch
+.cmp-git-head: FORCE | ffgt-patch
 	@$(GLUON_GIT) rev-parse @{0} | cmp -s '$@' || $(GLUON_GIT) rev-parse @{0} > '$@'
 
-.modules: release.mk modules .cmp-git-head $(PATCH_DIR) $(PATCH_FILES) | ffac-patch
+.modules: release.mk modules .cmp-git-head $(PATCH_DIR) $(PATCH_FILES) | ffgt-patch
 	@echo
 	@echo Updating Gluon modules…
 	@rm -f .modules
@@ -294,4 +294,4 @@ FORCE: ;
 
 .SUFFIXES: ;
 
-.PHONY: all gluon-update sign manifest build gluon-prepare ffac-patch patch-prepare patch edit-patches update-patches gluon-clean output-clean
+.PHONY: all gluon-update sign manifest build gluon-prepare ffgt-patch patch-prepare patch edit-patches update-patches gluon-clean output-clean
