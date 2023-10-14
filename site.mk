@@ -1,4 +1,6 @@
-﻿##	gluon site.mk Freifunk Regio Aachen
+﻿##  gluon site.mk 4830.org e. V.
+GLUON_MULTIDOMAIN=1
+GLUON_DEPRECATED=upgrade
 
 ##  GLUON_FEATURES
 #       Specify Gluon features/packages to enable;
