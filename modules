@@ -3,3 +3,7 @@ GLUON_SITE_FEEDS="ffac"
 PACKAGES_FFAC_REPO=https://github.com/freifunk-gluon/community-packages.git
 PACKAGES_FFAC_COMMIT=ca08c5446221cee0fc3d65b7dff2f12101a3ca59
 PACKAGES_FFAC_BRANCH=master
+
+PACKAGES_FFGT_REPO=https://github.com/wusel42/ffgt_packages-v2020.1.git
+PACKAGES_FFGT_COMMIT=58390e3e563aec96e97d08aae321137c162a8dfc
+PACKAGES_FFGT_BRANCH=master
