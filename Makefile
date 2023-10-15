@@ -148,6 +148,7 @@ build: gluon-prepare output-clean
 	+@for target in $(GLUON_TARGETS); do \
 		echo ''; \
 		echo ''Building target $$target''; \
+		date +%s >lastbuildstart; \
 		$(GLUON_MAKE) download all GLUON_TARGET=$$target CONFIG_JSON_ADD_IMAGE_INFO=1 2>&1 >build_$${target}.log; \
 		makeRC=$$? ;\
 		./log_status.sh "$$target" $$makeRC ; \
